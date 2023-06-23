@@ -14,13 +14,13 @@ const mapChain =
       truthCondition instanceof Function
         ? truthCondition(result)
         : result !== null && result !== undefined;
-    return isTrue(result)
-      ? mapChain(result, globalFailValue)
-      : mapChain(["fail", localFailValue ?? globalFailValue]);
+    if (isTrue(result)) {
+      return mapChain(result, globalFailValue);
+    } else {
+      const failValue = localFailValue ?? globalFailValue;
+      return mapChain([
+        "fail",
+        failValue instanceof Function ? failValue(result) : failValue,
+      ]);
+    }
   };
-
-mapChain(10, 30)((x) => x * 2)(() => null, "fail")(() => null, 1008)(); // 'fail'
-mapChain(10, 30)((x) => x * 2)(() => null)(() => null, 1008)(); // 30
-mapChain(10)((x) => x * 2)(() => null)(() => null, 1008)(); // null
-mapChain(10)((x) => x * 2)((x) => x + 2)((x) => x / 4)(); // 5.5
-mapChain(10)((x) => x * 2)((x) => x + 2)((x) => x / 4); // expression () => {}
