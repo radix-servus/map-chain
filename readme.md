@@ -47,5 +47,3 @@ const joeSmith = flatterer({
   age: 30,
 }); // 'Joe Smith, 25'
 ```
-
-P.S.: I couldn't come up with an elegant solution for passing the value of a failed computation through all the function calls, so my solution looks like `["fail", failValue]`. If anyone has any insights on how to improve this, please let me know. I'm also open to any constructive criticism.
